@@ -435,7 +435,6 @@
   nav {
     @apply backdrop-blur-md;
   }
-}
 
   /* Premium scroll reveal animations */
   @keyframes reveal-up {
