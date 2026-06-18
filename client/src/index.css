@@ -222,6 +222,26 @@
     }
   }
 
+  @keyframes bounce-soft {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  @keyframes reveal-up {
+    from {
+      opacity: 0;
+      transform: translateY(60px);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+
   .animate-fade-in-up {
     animation: fadeInUp 0.6s ease-out;
   }
@@ -236,6 +256,10 @@
 
   .animate-glow {
     animation: glow 3s ease-in-out infinite;
+  }
+
+  .animate-bounce {
+    animation: bounce-soft 2s ease-in-out infinite;
   }
 
   /* Smooth transitions */
@@ -264,163 +288,47 @@
     @apply text-primary hover:text-primary/80;
   }
 
-  /* Enhanced hover effects for interactive elements */
-  @keyframes pulse-glow {
-    0%, 100% {
-      box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
-    }
-    50% {
-      box-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
-    }
-  }
-
-  @keyframes float {
-    0%, 100% {
-      transform: translateY(0px);
-    }
-    50% {
-      transform: translateY(-10px);
-    }
-  }
-
-  @keyframes shimmer-text {
-    0% {
-      background-position: -1000px 0;
-    }
-    100% {
-      background-position: 1000px 0;
-    }
-  }
-
-  .animate-pulse-glow {
-    animation: pulse-glow 3s ease-in-out infinite;
-  }
-
-  .animate-float {
-    animation: float 6s ease-in-out infinite;
-  }
-
-  /* Card entrance animations */
-  @keyframes card-entrance {
-    from {
-      opacity: 0;
-      transform: translateY(30px) scale(0.95);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0) scale(1);
-    }
-  }
-
+  /* Card styles */
   .card {
-    animation: card-entrance 0.5s ease-out;
+    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
-  /* Enhanced button hover */
-  button:not(:disabled):hover {
-    @apply shadow-lg;
+  .card:hover {
+    transform: translateY(-12px);
+    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
   }
 
-  /* Smooth section transitions */
-  section {
-    @apply scroll-smooth;
-  }
-
-  /* Badge hover effects */
+  /* Badge animations */
   .badge {
-    @apply transition-all duration-300 cursor-default;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   .badge:hover {
-    @apply shadow-md scale-110 bg-primary text-primary-foreground;
+    transform: translateY(-4px) scale(1.05);
+    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
   }
 
-  /* Link hover effects */
-  a:not(.no-hover) {
-    @apply relative;
+  /* Button animations */
+  button {
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+    position: relative;
   }
 
-  /* Gradient text effect */
-  .gradient-text {
-    background: linear-gradient(135deg, #3b82f6, #a855f7);
-    background-size: 200% 200%;
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    background-clip: text;
+  button:hover:not(:disabled) {
+    transform: translateY(-2px);
   }
 
-  /* Smooth scroll anchor links */
-  html {
-    scroll-behavior: smooth;
+  button:active:not(:disabled) {
+    transform: translateY(0);
   }
 
-  /* Loading animation */
-  @keyframes spin-smooth {
-    from {
-      transform: rotate(0deg);
-    }
-    to {
-      transform: rotate(360deg);
-    }
-  }
-
-  .animate-spin {
-    animation: spin-smooth 1s linear infinite;
-  }
-
-  /* Profile image glow */
-  img[alt="Amr Mohamed Ali"] {
-    @apply transition-all duration-300;
-  }
-
-  img[alt="Amr Mohamed Ali"]:hover {
-    @apply shadow-2xl;
-    filter: brightness(1.1);
-  }
-
-  /* Stagger animations for lists */
-  @keyframes stagger-in {
-    from {
-      opacity: 0;
-      transform: translateX(-20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  /* Smooth input focus */
+  /* Input focus animations */
   input, textarea {
-    @apply transition-all duration-200;
+    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
   }
 
   input:focus, textarea:focus {
-    @apply ring-2 ring-primary/50 border-primary;
-  }
-
-  /* Chat message animations */
-  .chat-message {
-    animation: fadeInUp 0.3s ease-out;
-  }
-
-  /* Bounce animation for chat button */
-  @keyframes bounce-soft {
-    0%, 100% {
-      transform: translateY(0);
-    }
-    50% {
-      transform: translateY(-8px);
-    }
-  }
-
-  .animate-bounce {
-    animation: bounce-soft 2s ease-in-out infinite;
-  }
-
-  /* Smooth color transitions for theme */
-  * {
-    @apply transition-colors duration-300;
+    transform: scale(1.02);
   }
 
   /* Enhanced focus states for accessibility */
@@ -436,170 +344,19 @@
     @apply backdrop-blur-md;
   }
 
-  /* Premium scroll reveal animations */
-  @keyframes reveal-up {
-    from {
-      opacity: 0;
-      transform: translateY(60px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
+  /* Profile image glow */
+  img[alt="Amr Mohamed Ali"] {
+    @apply transition-all duration-300;
   }
 
-  @keyframes reveal-left {
-    from {
-      opacity: 0;
-      transform: translateX(-60px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
+  img[alt="Amr Mohamed Ali"]:hover {
+    @apply shadow-2xl;
+    filter: brightness(1.1);
   }
 
-  @keyframes reveal-right {
-    from {
-      opacity: 0;
-      transform: translateX(60px);
-    }
-    to {
-      opacity: 1;
-      transform: translateX(0);
-    }
-  }
-
-  @keyframes blur-in {
-    from {
-      filter: blur(10px);
-      opacity: 0;
-    }
-    to {
-      filter: blur(0);
-      opacity: 1;
-    }
-  }
-
-  @keyframes scale-in {
-    from {
-      opacity: 0;
-      transform: scale(0.9);
-    }
-    to {
-      opacity: 1;
-      transform: scale(1);
-    }
-  }
-
-  /* Staggered animations for lists */
-  @keyframes stagger-item {
-    from {
-      opacity: 0;
-      transform: translateY(20px);
-    }
-    to {
-      opacity: 1;
-      transform: translateY(0);
-    }
-  }
-
-  /* Text reveal animation */
-  @keyframes text-reveal {
-    from {
-      opacity: 0;
-      clip-path: inset(0 100% 0 0);
-    }
-    to {
-      opacity: 1;
-      clip-path: inset(0 0 0 0);
-    }
-  }
-
-  /* Glow pulse for interactive elements */
-  @keyframes glow-pulse {
-    0%, 100% {
-      box-shadow: 0 0 20px rgba(59, 130, 246, 0.3), inset 0 0 20px rgba(59, 130, 246, 0.1);
-    }
-    50% {
-      box-shadow: 0 0 40px rgba(59, 130, 246, 0.5), inset 0 0 30px rgba(59, 130, 246, 0.2);
-    }
-  }
-
-  /* Smooth hover lift effect */
-  @keyframes lift {
-    from {
-      transform: translateY(0);
-    }
-    to {
-      transform: translateY(-8px);
-    }
-  }
-
-  /* Gradient animation for text */
-  @keyframes gradient-flow {
-    0% {
-      background-position: 0% 50%;
-    }
-    50% {
-      background-position: 100% 50%;
-    }
-    100% {
-      background-position: 0% 50%;
-    }
-  }
-
-  /* Card hover lift with shadow */
-  .card {
-    transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .card:hover {
-    transform: translateY(-12px);
-    box-shadow: 0 20px 40px rgba(59, 130, 246, 0.2);
-  }
-
-  /* Smooth section transitions */
-  section {
-    transition: all 0.8s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  /* Enhanced badge animations */
-  .badge {
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  .badge:hover {
-    transform: translateY(-4px) scale(1.05);
-    box-shadow: 0 8px 16px rgba(59, 130, 246, 0.3);
-  }
-
-  /* Smooth button animations */
-  button {
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-    position: relative;
-  }
-
-  button:hover:not(:disabled) {
-    transform: translateY(-2px);
-  }
-
-  button:active:not(:disabled) {
-    transform: translateY(0);
-  }
-
-  /* Link hover effects */
-  a {
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  /* Input focus animations */
-  input, textarea {
-    transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
-  }
-
-  input:focus, textarea:focus {
-    transform: scale(1.02);
+  /* Chat message animations */
+  .chat-message {
+    animation: fadeInUp 0.3s ease-out;
   }
 
   /* Smooth scroll behavior */
