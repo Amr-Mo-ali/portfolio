@@ -1,6 +1,6 @@
-import { eq } from "drizzle-orm";
+import { eq, desc } from "drizzle-orm";
 import { drizzle } from "drizzle-orm/mysql2";
-import { InsertUser, users } from "../drizzle/schema";
+import { InsertUser, users, InsertContactSubmission, contactSubmissions, InsertChatMessage, chatMessages } from "../drizzle/schema";
 import { ENV } from './_core/env';
 
 let _db: ReturnType<typeof drizzle> | null = null;
@@ -89,4 +89,38 @@ export async function getUserByOpenId(openId: string) {
   return result.length > 0 ? result[0] : undefined;
 }
 
-// TODO: add feature queries here as your schema grows.
+// Contact Submissions
+export async function createContactSubmission(data: InsertContactSubmission) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+  const result = await db.insert(contactSubmissions).values(data);
+  return result;
+}
+
+export async function getContactSubmissions(limit: number = 50) {
+  const db = await getDb();
+  if (!db) {
+    return [];
+  }
+  return await db.select().from(contactSubmissions).orderBy(desc(contactSubmissions.createdAt)).limit(limit);
+}
+
+// Chat Messages
+export async function createChatMessage(data: InsertChatMessage) {
+  const db = await getDb();
+  if (!db) {
+    throw new Error("Database not available");
+  }
+  const result = await db.insert(chatMessages).values(data);
+  return result;
+}
+
+export async function getChatHistory(sessionId: string, limit: number = 50) {
+  const db = await getDb();
+  if (!db) {
+    return [];
+  }
+  return await db.select().from(chatMessages).where(eq(chatMessages.sessionId, sessionId)).orderBy(desc(chatMessages.createdAt)).limit(limit);
+}
