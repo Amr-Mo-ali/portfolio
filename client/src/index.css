@@ -79,38 +79,38 @@
 }
 
 .dark {
-  --primary: oklch(0.65 0.22 260);
-  --primary-foreground: oklch(0.98 0 0);
-  --sidebar-primary: oklch(0.65 0.22 260);
-  --sidebar-primary-foreground: oklch(0.98 0 0);
-  --background: oklch(0.12 0.01 286);
-  --foreground: oklch(0.9 0.01 65);
-  --card: oklch(0.18 0.01 286);
-  --card-foreground: oklch(0.9 0.01 65);
-  --popover: oklch(0.18 0.01 286);
-  --popover-foreground: oklch(0.9 0.01 65);
-  --secondary: oklch(0.22 0.01 286);
-  --secondary-foreground: oklch(0.75 0.01 65);
-  --muted: oklch(0.25 0.01 286);
-  --muted-foreground: oklch(0.7 0.02 286);
-  --accent: oklch(0.28 0.01 286);
-  --accent-foreground: oklch(0.95 0.01 65);
+  --primary: oklch(0.68 0.24 260);
+  --primary-foreground: oklch(1 0 0);
+  --sidebar-primary: oklch(0.68 0.24 260);
+  --sidebar-primary-foreground: oklch(1 0 0);
+  --background: oklch(0.08 0.005 286);
+  --foreground: oklch(0.92 0.008 65);
+  --card: oklch(0.14 0.008 286);
+  --card-foreground: oklch(0.92 0.008 65);
+  --popover: oklch(0.14 0.008 286);
+  --popover-foreground: oklch(0.92 0.008 65);
+  --secondary: oklch(0.2 0.008 286);
+  --secondary-foreground: oklch(0.8 0.008 65);
+  --muted: oklch(0.24 0.008 286);
+  --muted-foreground: oklch(0.72 0.02 286);
+  --accent: oklch(0.32 0.015 260);
+  --accent-foreground: oklch(0.98 0.008 65);
   --destructive: oklch(0.704 0.191 22.216);
   --destructive-foreground: oklch(0.985 0 0);
-  --border: oklch(1 0 0 / 10%);
-  --input: oklch(1 0 0 / 15%);
-  --ring: oklch(0.65 0.22 260);
-  --chart-1: oklch(0.65 0.2 260);
-  --chart-2: oklch(0.55 0.25 260);
-  --chart-3: oklch(0.45 0.25 260);
-  --chart-4: oklch(0.35 0.25 260);
-  --chart-5: oklch(0.25 0.25 260);
-  --sidebar: oklch(0.18 0.01 286);
-  --sidebar-foreground: oklch(0.9 0.01 65);
-  --sidebar-accent: oklch(0.25 0.01 286);
-  --sidebar-accent-foreground: oklch(0.98 0 0);
-  --sidebar-border: oklch(1 0 0 / 10%);
-  --sidebar-ring: oklch(0.65 0.22 260);
+  --border: oklch(1 0 0 / 8%);
+  --input: oklch(1 0 0 / 12%);
+  --ring: oklch(0.68 0.24 260);
+  --chart-1: oklch(0.72 0.22 260);
+  --chart-2: oklch(0.68 0.24 260);
+  --chart-3: oklch(0.62 0.22 260);
+  --chart-4: oklch(0.55 0.2 260);
+  --chart-5: oklch(0.48 0.18 260);
+  --sidebar: oklch(0.14 0.008 286);
+  --sidebar-foreground: oklch(0.92 0.008 65);
+  --sidebar-accent: oklch(0.24 0.008 286);
+  --sidebar-accent-foreground: oklch(1 0 0);
+  --sidebar-border: oklch(1 0 0 / 8%);
+  --sidebar-ring: oklch(0.68 0.24 260);
 }
 
 @layer base {
@@ -262,5 +262,177 @@
   /* Link styles */
   a {
     @apply text-primary hover:text-primary/80;
+  }
+
+  /* Enhanced hover effects for interactive elements */
+  @keyframes pulse-glow {
+    0%, 100% {
+      box-shadow: 0 0 20px rgba(59, 130, 246, 0.3);
+    }
+    50% {
+      box-shadow: 0 0 40px rgba(59, 130, 246, 0.5);
+    }
+  }
+
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0px);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+
+  @keyframes shimmer-text {
+    0% {
+      background-position: -1000px 0;
+    }
+    100% {
+      background-position: 1000px 0;
+    }
+  }
+
+  .animate-pulse-glow {
+    animation: pulse-glow 3s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 6s ease-in-out infinite;
+  }
+
+  /* Card entrance animations */
+  @keyframes card-entrance {
+    from {
+      opacity: 0;
+      transform: translateY(30px) scale(0.95);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+    }
+  }
+
+  .card {
+    animation: card-entrance 0.5s ease-out;
+  }
+
+  /* Enhanced button hover */
+  button:not(:disabled):hover {
+    @apply shadow-lg;
+  }
+
+  /* Smooth section transitions */
+  section {
+    @apply scroll-smooth;
+  }
+
+  /* Badge hover effects */
+  .badge {
+    @apply transition-all duration-300 cursor-default;
+  }
+
+  .badge:hover {
+    @apply shadow-md scale-110 bg-primary text-primary-foreground;
+  }
+
+  /* Link hover effects */
+  a:not(.no-hover) {
+    @apply relative;
+  }
+
+  /* Gradient text effect */
+  .gradient-text {
+    background: linear-gradient(135deg, #3b82f6, #a855f7);
+    background-size: 200% 200%;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+
+  /* Smooth scroll anchor links */
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* Loading animation */
+  @keyframes spin-smooth {
+    from {
+      transform: rotate(0deg);
+    }
+    to {
+      transform: rotate(360deg);
+    }
+  }
+
+  .animate-spin {
+    animation: spin-smooth 1s linear infinite;
+  }
+
+  /* Profile image glow */
+  img[alt="Amr Mohamed Ali"] {
+    @apply transition-all duration-300;
+  }
+
+  img[alt="Amr Mohamed Ali"]:hover {
+    @apply shadow-2xl;
+    filter: brightness(1.1);
+  }
+
+  /* Stagger animations for lists */
+  @keyframes stagger-in {
+    from {
+      opacity: 0;
+      transform: translateX(-20px);
+    }
+    to {
+      opacity: 1;
+      transform: translateX(0);
+    }
+  }
+
+  /* Smooth input focus */
+  input, textarea {
+    @apply transition-all duration-200;
+  }
+
+  input:focus, textarea:focus {
+    @apply ring-2 ring-primary/50 border-primary;
+  }
+
+  /* Chat message animations */
+  .chat-message {
+    animation: fadeInUp 0.3s ease-out;
+  }
+
+  /* Bounce animation for chat button */
+  @keyframes bounce-soft {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-8px);
+    }
+  }
+
+  .animate-bounce {
+    animation: bounce-soft 2s ease-in-out infinite;
+  }
+
+  /* Smooth color transitions for theme */
+  * {
+    @apply transition-colors duration-300;
+  }
+
+  /* Enhanced focus states for accessibility */
+  button:focus-visible,
+  a:focus-visible,
+  input:focus-visible,
+  textarea:focus-visible {
+    @apply outline-none ring-2 ring-primary ring-offset-2;
+  }
+
+  /* Smooth backdrop blur */
+  nav {
+    @apply backdrop-blur-md;
   }
 }

@@ -5,9 +5,10 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Send, Github, Linkedin, Mail, ExternalLink, MessageCircle, X } from "lucide-react";
+import { Loader2, Send, Github, Linkedin, Mail, ExternalLink, MessageCircle, X, Sun, Moon } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { Streamdown } from "streamdown";
+import { useTheme } from "@/contexts/ThemeContext";
 
 // Project data
 const projects = [
@@ -66,6 +67,7 @@ const skills = {
 };
 
 export default function Home() {
+  const { theme, toggleTheme } = useTheme();
   const [contactForm, setContactForm] = useState({ name: "", email: "", message: "" });
   const [chatOpen, setChatOpen] = useState(false);
   const [sessionId] = useState(() => nanoid());
@@ -122,28 +124,53 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-background text-foreground">
       {/* Navigation */}
-      <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border">
+      <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border animate-fade-in">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
-          <div className="text-2xl font-bold bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
+          <div className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
             Amr Mohamed Ali
           </div>
           <div className="flex gap-6 items-center">
-            <a href="#about" className="hover:text-primary transition-colors">About</a>
-            <a href="#skills" className="hover:text-primary transition-colors">Skills</a>
-            <a href="#projects" className="hover:text-primary transition-colors">Projects</a>
-            <a href="#contact" className="hover:text-primary transition-colors">Contact</a>
+            <a href="#about" className="hover:text-primary transition-colors text-sm md:text-base">About</a>
+            <a href="#skills" className="hover:text-primary transition-colors text-sm md:text-base">Skills</a>
+            <a href="#projects" className="hover:text-primary transition-colors text-sm md:text-base">Projects</a>
+            <a href="#contact" className="hover:text-primary transition-colors text-sm md:text-base">Contact</a>
+            <button
+              onClick={toggleTheme}
+              className="p-2 rounded-lg hover:bg-accent transition-colors"
+              aria-label="Toggle theme"
+            >
+              {theme === "dark" ? <Sun size={20} /> : <Moon size={20} />}
+            </button>
           </div>
         </div>
       </nav>
 
       {/* Hero Section */}
-      <section className="py-24 px-4 bg-gradient-to-b from-blue-50 to-background">
-        <div className="container mx-auto max-w-4xl text-center space-y-8">
-          <div className="space-y-4">
-            <h1 className="text-5xl md:text-6xl font-bold tracking-tight">
+      <section className="relative py-24 px-4 bg-gradient-to-b from-blue-950/20 via-background to-background overflow-hidden">
+        {/* Animated background elements */}
+        <div className="absolute inset-0 overflow-hidden pointer-events-none">
+          <div className="absolute top-20 right-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
+          <div className="absolute bottom-0 left-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }}></div>
+        </div>
+
+        <div className="container mx-auto max-w-5xl text-center space-y-8 relative z-10">
+          {/* Profile Image */}
+          <div className="flex justify-center mb-8 animate-fade-in-up" style={{ animationDelay: "0.1s" }}>
+            <div className="relative">
+              <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-2xl opacity-50 animate-glow"></div>
+              <img
+                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663774084633/NdGxozidUqETPjT9gxcfp5/amr_profile-GmFapwuSEPVnTSZgjqnPEV.webp"
+                alt="Amr Mohamed Ali"
+                className="relative w-48 h-48 rounded-full object-cover border-4 border-primary shadow-2xl"
+              />
+            </div>
+          </div>
+
+          <div className="space-y-4 animate-fade-in-up" style={{ animationDelay: "0.2s" }}>
+            <h1 className="text-6xl md:text-7xl font-bold tracking-tight">
               Amr Mohamed Ali
             </h1>
-            <p className="text-2xl md:text-3xl font-semibold text-muted-foreground">
+            <p className="text-2xl md:text-3xl font-semibold bg-gradient-to-r from-blue-400 to-purple-400 bg-clip-text text-transparent">
               ML/AI Engineer · Arabic NLP Specialist · LLM Systems & Voice AI
             </p>
             <p className="text-lg text-muted-foreground max-w-2xl mx-auto leading-relaxed">
@@ -152,53 +179,53 @@ export default function Home() {
           </div>
 
           {/* Social Links */}
-          <div className="flex justify-center gap-6 pt-4">
+          <div className="flex justify-center gap-4 pt-4 flex-wrap animate-fade-in-up" style={{ animationDelay: "0.3s" }}>
             <a
               href="https://github.com/Amr-Mo-ali"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-card hover:bg-accent text-card-foreground rounded-lg transition-colors border border-border"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-card hover:bg-accent text-card-foreground rounded-lg transition-all border border-border hover:border-primary hover:shadow-lg hover:scale-105"
             >
               <Github size={20} />
-              GitHub
+              <span className="hidden sm:inline">GitHub</span>
             </a>
             <a
               href="https://linkedin.com/in/amr-mohamed21"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-card hover:bg-accent text-card-foreground rounded-lg transition-colors border border-border"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-card hover:bg-accent text-card-foreground rounded-lg transition-all border border-border hover:border-primary hover:shadow-lg hover:scale-105"
             >
               <Linkedin size={20} />
-              LinkedIn
+              <span className="hidden sm:inline">LinkedIn</span>
             </a>
             <a
               href="https://huggingface.co/AmrMohamed21"
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-card hover:bg-accent text-card-foreground rounded-lg transition-colors border border-border"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-card hover:bg-accent text-card-foreground rounded-lg transition-all border border-border hover:border-primary hover:shadow-lg hover:scale-105"
             >
               <ExternalLink size={20} />
-              HuggingFace
+              <span className="hidden sm:inline">HuggingFace</span>
             </a>
             <a
               href="mailto:amrmoaliradwan@gmail.com"
-              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-opacity"
+              className="inline-flex items-center gap-2 px-6 py-3 bg-primary text-primary-foreground rounded-lg hover:opacity-90 transition-all hover:shadow-lg hover:scale-105 font-medium"
             >
               <Mail size={20} />
-              Email
+              <span className="hidden sm:inline">Email</span>
             </a>
           </div>
         </div>
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-16 px-4 bg-card">
-        <div className="container mx-auto max-w-4xl space-y-8">
+      <section id="about" className="py-20 px-4 bg-card/50 animate-fade-in-up">
+        <div className="container mx-auto max-w-4xl space-y-12">
           <h2 className="text-4xl font-bold">About</h2>
           
-          <div className="grid md:grid-cols-2 gap-8">
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold">Professional Summary</h3>
+          <div className="grid md:grid-cols-2 gap-12">
+            <div className="space-y-4 animate-slide-in-right">
+              <h3 className="text-2xl font-semibold">Professional Summary</h3>
               <p className="text-muted-foreground leading-relaxed">
                 I understand language models from the inside out: I've studied transformer architecture at the implementation level — attention mechanisms, tokenization, training loops — and applied that depth in real projects. I care about systems that work in the real world, not just notebooks.
               </p>
@@ -206,34 +233,39 @@ export default function Home() {
                 Currently seeking ML/NLP roles in Egypt and the Gulf where Arabic language expertise meets production engineering.
               </p>
             </div>
-
-            <div className="space-y-4">
-              <h3 className="text-xl font-semibold">Education</h3>
-              <Card className="p-4 border border-border">
-                <div className="space-y-2">
-                  <p className="font-semibold">B.Sc. Computer Science & AI</p>
-                  <p className="text-sm text-muted-foreground">Beni Suef University</p>
-                  <p className="text-sm text-muted-foreground">09/2021 – 10/2024</p>
-                  <p className="text-sm pt-2">Graduated with focus on AI and machine learning. Capstone project: AI outfit recommendation system for visually impaired users using computer vision and transfer learning.</p>
+            <div className="space-y-4 animate-slide-in-right" style={{ animationDelay: "0.1s" }}>
+              <h3 className="text-2xl font-semibold">Education</h3>
+              <div className="space-y-3">
+                <div>
+                  <p className="font-semibold text-primary">B.Sc. Computer Science & AI</p>
+                  <p className="text-muted-foreground">Beni Suef University</p>
+                  <p className="text-sm text-muted-foreground">09/2021 - 10/2024</p>
                 </div>
-              </Card>
+                <p className="text-muted-foreground leading-relaxed">
+                  Graduated with focus on AI and machine learning. Capstone project: AI outfit recommendation system for visually impaired users using transfer learning.
+                </p>
+              </div>
             </div>
           </div>
         </div>
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-16 px-4">
-        <div className="container mx-auto max-w-4xl space-y-8">
-          <h2 className="text-4xl font-bold">Skills</h2>
+      <section id="skills" className="py-20 px-4 bg-background animate-fade-in-up">
+        <div className="container mx-auto max-w-4xl space-y-12">
+          <h2 className="text-4xl font-bold">Skills & Expertise</h2>
           
           <div className="grid md:grid-cols-2 gap-8">
-            {Object.entries(skills).map(([category, items]) => (
-              <div key={category} className="space-y-3">
-                <h3 className="font-semibold text-lg">{category}</h3>
+            {Object.entries(skills).map(([category, skillList], idx) => (
+              <div key={category} className="space-y-4 animate-fade-in-up" style={{ animationDelay: `${idx * 0.1}s` }}>
+                <h3 className="text-xl font-semibold text-primary">{category}</h3>
                 <div className="flex flex-wrap gap-2">
-                  {items.map((skill) => (
-                    <Badge key={skill} variant="secondary" className="px-3 py-1">
+                  {skillList.map((skill) => (
+                    <Badge
+                      key={skill}
+                      variant="outline"
+                      className="px-3 py-1.5 hover:bg-primary hover:text-primary-foreground transition-all cursor-default hover:scale-110"
+                    >
                       {skill}
                     </Badge>
                   ))}
@@ -245,47 +277,41 @@ export default function Home() {
       </section>
 
       {/* Work Experience Section */}
-      <section className="py-16 px-4 bg-card">
-        <div className="container mx-auto max-w-4xl space-y-8">
+      <section className="py-20 px-4 bg-card/50 animate-fade-in-up">
+        <div className="container mx-auto max-w-4xl space-y-12">
           <h2 className="text-4xl font-bold">Work Experience</h2>
           
-          <Card className="p-6 border border-border">
-            <div className="space-y-4">
-              <div>
-                <h3 className="text-xl font-semibold">AI & Software Engineer</h3>
-                <p className="text-sm text-muted-foreground">Freelance • Cairo, Egypt</p>
-                <p className="text-sm text-muted-foreground">01/2024 – Present</p>
-              </div>
-              
-              <ul className="space-y-3 text-muted-foreground">
-                <li className="flex gap-3">
-                  <span className="text-primary mt-1">•</span>
-                  <span>Designed and deployed Lina, a production Arabic AI receptionist — appointment booking, customer queries, Telegram integration using n8n, LangChain, and OpenAI API. Live with real users.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary mt-1">•</span>
-                  <span>Built a social media automation pipeline (Telegram → multi-platform) cutting manual publishing effort by 90% using APScheduler and Telegram Bot API.</span>
-                </li>
-                <li className="flex gap-3">
-                  <span className="text-primary mt-1">•</span>
-                  <span>Delivered FashionNova, a full-stack e-commerce platform — Next.js, Prisma, Supabase, NextAuth, Cloudinary, WhatsApp notifications. Deployed on Vercel.</span>
-                </li>
+          <div className="space-y-8">
+            <div className="border-l-4 border-primary pl-6 space-y-3 hover:pl-8 transition-all">
+              <h3 className="text-2xl font-semibold">AI & Software Engineer</h3>
+              <p className="text-muted-foreground">Freelance • Cairo, Egypt</p>
+              <p className="text-sm text-muted-foreground">01/2024 - Present</p>
+              <ul className="space-y-2 text-muted-foreground list-disc list-inside">
+                <li>Designed and deployed Line, a production Arabic AI receptionist — appointment booking, customer queries, Telegram integration using LLM, LangChain, and OpenAI API. Live with real users.</li>
+                <li>Built a social media automation pipeline (Telegram — multi-platform cutting manual publishing effort by 90% using APScheduler and Telegram Bot API.</li>
+                <li>Delivered FashionNook, a full-stack e-commerce platform — Next.js, Prisma, Supabase, NestAuth. Deployed on Vercel.</li>
               </ul>
             </div>
-          </Card>
+          </div>
         </div>
       </section>
 
-      {/* Projects Section */}
-      <section id="projects" className="py-16 px-4">
-        <div className="container mx-auto max-w-6xl space-y-8">
+      {/* Featured Projects Section */}
+      <section id="projects" className="py-20 px-4 bg-background animate-fade-in-up">
+        <div className="container mx-auto max-w-5xl space-y-12">
           <h2 className="text-4xl font-bold">Featured Projects</h2>
           
           <div className="grid md:grid-cols-2 gap-6">
             {projects.map((project, idx) => (
-              <Card key={idx} className="p-6 border border-border hover:shadow-lg transition-shadow flex flex-col">
+              <Card
+                key={idx}
+                className="p-6 border border-border hover:border-primary hover:shadow-2xl transition-all hover:scale-105 flex flex-col group animate-fade-in-up"
+                style={{ animationDelay: `${idx * 0.08}s` }}
+              >
                 <div className="space-y-3 flex-1">
-                  <h3 className="text-xl font-semibold" dir={project.isArabic ? "rtl" : "ltr"}>{project.title}</h3>
+                  <h3 className="text-xl font-semibold group-hover:text-primary transition-colors" dir={project.isArabic ? "rtl" : "ltr"}>
+                    {project.title}
+                  </h3>
                   <p className="text-muted-foreground text-sm leading-relaxed">{project.description}</p>
                   <div className="flex flex-wrap gap-2 pt-2">
                     {project.tags.map((tag) => (
@@ -302,7 +328,7 @@ export default function Home() {
                       href={project.github}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                      className="inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors"
                     >
                       <Github size={16} />
                       Code
@@ -313,7 +339,7 @@ export default function Home() {
                       href={project.demo}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-1 text-sm text-primary hover:underline"
+                      className="inline-flex items-center gap-1 text-sm text-primary hover:text-primary/80 transition-colors"
                     >
                       <ExternalLink size={16} />
                       Demo
@@ -327,25 +353,23 @@ export default function Home() {
       </section>
 
       {/* Contact Section */}
-      <section id="contact" className="py-16 px-4 bg-card">
+      <section id="contact" className="py-20 px-4 bg-card/50 animate-fade-in-up">
         <div className="container mx-auto max-w-2xl space-y-8">
-          <div className="text-center space-y-2">
+          <div className="text-center space-y-4">
             <h2 className="text-4xl font-bold">Get In Touch</h2>
             <p className="text-muted-foreground">Have a question or want to work together? Feel free to reach out.</p>
           </div>
 
-          <form onSubmit={handleContactSubmit} className="space-y-4">
+          <form onSubmit={handleContactSubmit} className="space-y-6">
             <div>
               <label className="block text-sm font-medium mb-2">Name</label>
               <Input
-                type="text"
                 placeholder="Your name"
                 value={contactForm.name}
                 onChange={(e) => setContactForm({ ...contactForm, name: e.target.value })}
                 required
               />
             </div>
-
             <div>
               <label className="block text-sm font-medium mb-2">Email</label>
               <Input
@@ -356,7 +380,6 @@ export default function Home() {
                 required
               />
             </div>
-
             <div>
               <label className="block text-sm font-medium mb-2">Message</label>
               <Textarea
@@ -367,48 +390,45 @@ export default function Home() {
                 rows={5}
               />
             </div>
-
             <Button
               type="submit"
-              className="w-full"
+              className="w-full bg-primary hover:bg-primary/90 text-primary-foreground font-medium py-3 transition-all hover:shadow-lg"
               disabled={contactMutation.isPending}
             >
               {contactMutation.isPending ? (
                 <>
-                  <Loader2 className="mr-2 h-4 w-4 animate-spin" />
+                  <Loader2 size={16} className="animate-spin mr-2" />
                   Sending...
                 </>
               ) : (
                 "Send Message"
               )}
             </Button>
-
             {contactSubmitted && (
-              <div className="p-4 bg-green-50 text-green-800 rounded-lg text-sm">
-                ✓ Message sent successfully! I'll get back to you soon.
-              </div>
-            )}
-
-            {contactMutation.isError && (
-              <div className="p-4 bg-red-50 text-red-800 rounded-lg text-sm">
-                ✗ Error sending message. Please try again.
-              </div>
+              <p className="text-center text-green-500 font-medium animate-fade-in">
+                ✓ Message sent successfully!
+              </p>
             )}
           </form>
         </div>
       </section>
 
-      {/* AI Chat Button */}
+      {/* Footer */}
+      <footer className="py-8 px-4 bg-background border-t border-border text-center text-muted-foreground">
+        <p>© 2025 Amr Mohamed Ali. All rights reserved.</p>
+      </footer>
+
+      {/* Chat Button */}
       <button
         onClick={() => setChatOpen(!chatOpen)}
-        className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg hover:shadow-xl transition-shadow flex items-center justify-center z-40"
+        className="fixed bottom-6 right-6 w-14 h-14 bg-primary text-primary-foreground rounded-full shadow-lg hover:shadow-xl hover:scale-110 transition-all flex items-center justify-center z-30 animate-bounce"
       >
         {chatOpen ? <X size={24} /> : <MessageCircle size={24} />}
       </button>
 
       {/* AI Chat Widget */}
       {chatOpen && (
-        <div className="fixed bottom-24 right-6 w-full sm:w-96 h-[500px] max-h-[70vh] bg-card border border-border rounded-lg shadow-xl flex flex-col z-40 mx-2 sm:mx-0">
+        <div className="fixed bottom-24 right-6 w-full sm:w-96 h-[500px] max-h-[70vh] bg-card border border-border rounded-lg shadow-2xl flex flex-col z-40 mx-2 sm:mx-0 animate-fade-in-up">
           <div className="p-4 border-b border-border">
             <h3 className="font-semibold">Chat with Amr's AI Assistant</h3>
             <p className="text-xs text-muted-foreground">Ask about my skills, projects, and experience</p>
@@ -416,7 +436,7 @@ export default function Home() {
 
           <div className="flex-1 overflow-y-auto p-4 space-y-4">
             {chatMessages.length === 0 && (
-              <div className="text-center text-muted-foreground text-sm py-8">
+              <div className="text-center text-muted-foreground">
                 <p>Hi! Ask me anything about Amr's skills, projects, or experience.</p>
               </div>
             )}
@@ -440,36 +460,31 @@ export default function Home() {
             {chatSendMutation.isPending && (
               <div className="flex justify-start">
                 <div className="bg-muted text-muted-foreground px-4 py-2 rounded-lg">
-                  <Loader2 className="h-4 w-4 animate-spin" />
+                  <Loader2 size={16} className="animate-spin" />
                 </div>
               </div>
             )}
           </div>
 
           <div className="p-4 border-t border-border flex gap-2">
-            <input
-              type="text"
-              placeholder="Type your question..."
+            <Input
+              placeholder="Ask something..."
               value={chatInput}
               onChange={(e) => setChatInput(e.target.value)}
               onKeyPress={(e) => e.key === "Enter" && handleChatSend()}
-              className="flex-1 px-3 py-2 bg-background border border-border rounded-lg text-sm focus:outline-none focus:ring-2 focus:ring-primary"
+              disabled={chatSendMutation.isPending}
             />
-            <button
+            <Button
               onClick={handleChatSend}
               disabled={chatSendMutation.isPending || !chatInput.trim()}
-              className="p-2 bg-primary text-primary-foreground rounded-lg hover:opacity-90 disabled:opacity-50 transition-opacity"
+              size="sm"
+              className="bg-primary hover:bg-primary/90"
             >
-              <Send size={18} />
-            </button>
+              <Send size={16} />
+            </Button>
           </div>
         </div>
       )}
-
-      {/* Footer */}
-      <footer className="py-8 px-4 bg-card border-t border-border text-center text-muted-foreground text-sm">
-        <p>© 2026 Amr Mohamed Ali. All rights reserved.</p>
-      </footer>
     </div>
   );
 }
