@@ -1,11 +1,11 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import { nanoid } from "nanoid";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Card } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
-import { Loader2, Send, Github, Linkedin, Mail, ExternalLink, MessageCircle, X, Sun, Moon } from "lucide-react";
+import { Loader2, Send, Github, Linkedin, Mail, ExternalLink, MessageCircle, X, Sun, Moon, ChevronLeft, ChevronRight, Star } from "lucide-react";
 import { trpc } from "@/lib/trpc";
 import { Streamdown } from "streamdown";
 import { useTheme } from "@/contexts/ThemeContext";
@@ -66,6 +66,94 @@ const skills = {
   "Web / Full-Stack": ["Next.js", "React", "Tailwind CSS", "Supabase", "Prisma"],
 };
 
+// Blog articles
+const blogArticles = [
+  {
+    id: 1,
+    title: "Building Production Arabic NLP Systems",
+    excerpt: "A deep dive into challenges and solutions for deploying Arabic language models at scale.",
+    date: "Jun 15, 2025",
+    category: "Arabic NLP",
+    readTime: "8 min read",
+    link: "#",
+  },
+  {
+    id: 2,
+    title: "Voice AI for Egyptian Arabic: Whisper + LLaMA Pipeline",
+    excerpt: "How I built a production voice tutor that understands Egyptian dialect and responds naturally.",
+    date: "Jun 10, 2025",
+    category: "Voice AI",
+    readTime: "12 min read",
+    link: "#",
+  },
+  {
+    id: 3,
+    title: "Fine-tuning AraBERT for Fake News Detection",
+    excerpt: "Achieving 98.8% accuracy on Arabic news credibility with transfer learning and data augmentation.",
+    date: "Jun 5, 2025",
+    category: "Deep Learning",
+    readTime: "10 min read",
+    link: "#",
+  },
+  {
+    id: 4,
+    title: "RAG Systems for Arabic Knowledge Bases",
+    excerpt: "Building retrieval-augmented generation pipelines that handle Arabic text normalization and RTL challenges.",
+    date: "May 28, 2025",
+    category: "LLM Systems",
+    readTime: "11 min read",
+    link: "#",
+  },
+];
+
+// Testimonials
+const testimonials = [
+  {
+    name: "Ahmed Hassan",
+    role: "CTO, TechStartup Cairo",
+    text: "Amr delivered an exceptional Arabic NLP solution that exceeded our expectations. His deep understanding of both Arabic linguistics and modern ML engineering is rare.",
+    rating: 5,
+  },
+  {
+    name: "Fatima Al-Mansouri",
+    role: "Product Lead, AI Company",
+    text: "Working with Amr on the voice AI project was seamless. He combines technical excellence with clear communication. Highly recommended for any Arabic AI work.",
+    rating: 5,
+  },
+  {
+    name: "Mohammed Khalil",
+    role: "Founder, EdTech Platform",
+    text: "Amr's expertise in voice pipelines and LLM integration was crucial to our success. He's a rare talent who understands production systems.",
+    rating: 5,
+  },
+];
+
+// Scroll observer hook
+function useScrollReveal(threshold = 0.1) {
+  const ref = useRef<HTMLDivElement>(null);
+  const [isVisible, setIsVisible] = useState(false);
+
+  useEffect(() => {
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setIsVisible(true);
+          observer.unobserve(entry.target);
+        }
+      },
+      { threshold }
+    );
+
+    if (ref.current) {
+      observer.observe(ref.current);
+    }
+
+    return () => observer.disconnect();
+  }, [threshold]);
+
+  return { ref, isVisible };
+}
+
 export default function Home() {
   const { theme, toggleTheme } = useTheme();
   const [contactForm, setContactForm] = useState({ name: "", email: "", message: "" });
@@ -74,6 +162,15 @@ export default function Home() {
   const [chatMessages, setChatMessages] = useState<Array<{ role: string; content: string }>>([]);
   const [chatInput, setChatInput] = useState("");
   const [contactSubmitted, setContactSubmitted] = useState(false);
+  const [testimonialIndex, setTestimonialIndex] = useState(0);
+  const [scrollY, setScrollY] = useState(0);
+
+  // Scroll listener for parallax effects
+  useEffect(() => {
+    const handleScroll = () => setScrollY(window.scrollY);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   // tRPC mutations and queries
   const contactMutation = trpc.contact.submit.useMutation();
@@ -121,19 +218,28 @@ export default function Home() {
     }
   };
 
+  // Scroll reveal hooks
+  const aboutRef = useScrollReveal();
+  const skillsRef = useScrollReveal();
+  const projectsRef = useScrollReveal();
+  const blogRef = useScrollReveal();
+  const testimonialsRef = useScrollReveal();
+  const contactRef = useScrollReveal();
+
   return (
-    <div className="min-h-screen bg-background text-foreground">
+    <div className="min-h-screen bg-background text-foreground overflow-x-hidden">
       {/* Navigation */}
       <nav className="sticky top-0 z-50 bg-background/95 backdrop-blur supports-[backdrop-filter]:bg-background/60 border-b border-border animate-fade-in">
         <div className="container mx-auto px-4 py-4 flex justify-between items-center">
           <div className="text-2xl font-bold bg-gradient-to-r from-blue-500 to-purple-500 bg-clip-text text-transparent">
             Amr Mohamed Ali
           </div>
-          <div className="flex gap-6 items-center">
-            <a href="#about" className="hover:text-primary transition-colors text-sm md:text-base">About</a>
-            <a href="#skills" className="hover:text-primary transition-colors text-sm md:text-base">Skills</a>
-            <a href="#projects" className="hover:text-primary transition-colors text-sm md:text-base">Projects</a>
-            <a href="#contact" className="hover:text-primary transition-colors text-sm md:text-base">Contact</a>
+          <div className="flex gap-6 items-center overflow-x-auto">
+            <a href="#about" className="hover:text-primary transition-colors text-sm md:text-base whitespace-nowrap">About</a>
+            <a href="#skills" className="hover:text-primary transition-colors text-sm md:text-base whitespace-nowrap">Skills</a>
+            <a href="#projects" className="hover:text-primary transition-colors text-sm md:text-base whitespace-nowrap">Projects</a>
+            <a href="#blog" className="hover:text-primary transition-colors text-sm md:text-base whitespace-nowrap">Blog</a>
+            <a href="#contact" className="hover:text-primary transition-colors text-sm md:text-base whitespace-nowrap">Contact</a>
             <button
               onClick={toggleTheme}
               className="p-2 rounded-lg hover:bg-accent transition-colors"
@@ -145,12 +251,18 @@ export default function Home() {
         </div>
       </nav>
 
-      {/* Hero Section */}
+      {/* Hero Section with Parallax */}
       <section className="relative py-24 px-4 bg-gradient-to-b from-blue-950/20 via-background to-background overflow-hidden">
-        {/* Animated background elements */}
+        {/* Animated background elements with parallax */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 right-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"></div>
-          <div className="absolute bottom-0 left-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse" style={{ animationDelay: "1s" }}></div>
+          <div 
+            className="absolute top-20 right-10 w-72 h-72 bg-blue-500/10 rounded-full blur-3xl animate-pulse"
+            style={{ transform: `translateY(${scrollY * 0.5}px)` }}
+          ></div>
+          <div 
+            className="absolute bottom-0 left-10 w-96 h-96 bg-purple-500/10 rounded-full blur-3xl animate-pulse"
+            style={{ animationDelay: "1s", transform: `translateY(${scrollY * -0.3}px)` }}
+          ></div>
         </div>
 
         <div className="container mx-auto max-w-5xl text-center space-y-8 relative z-10">
@@ -159,9 +271,9 @@ export default function Home() {
             <div className="relative">
               <div className="absolute inset-0 bg-gradient-to-r from-blue-500 to-purple-500 rounded-full blur-2xl opacity-50 animate-glow"></div>
               <img
-                src="https://d2xsxph8kpxj0f.cloudfront.net/310519663774084633/NdGxozidUqETPjT9gxcfp5/amr_profile-GmFapwuSEPVnTSZgjqnPEV.webp"
+                src="/manus-storage/WhatsAppImage2026-06-07at2.31.30PM_c9fcc1eb.png"
                 alt="Amr Mohamed Ali"
-                className="relative w-48 h-48 rounded-full object-cover border-4 border-primary shadow-2xl"
+                className="relative w-48 h-48 rounded-full object-cover border-4 border-primary shadow-2xl hover:scale-105 transition-transform duration-300"
               />
             </div>
           </div>
@@ -219,12 +331,12 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section id="about" className="py-20 px-4 bg-card/50 animate-fade-in-up">
+      <section id="about" ref={aboutRef.ref} className={`py-20 px-4 bg-card/50 transition-all duration-1000 ${aboutRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
         <div className="container mx-auto max-w-4xl space-y-12">
           <h2 className="text-4xl font-bold">About</h2>
           
           <div className="grid md:grid-cols-2 gap-12">
-            <div className="space-y-4 animate-slide-in-right">
+            <div className="space-y-4">
               <h3 className="text-2xl font-semibold">Professional Summary</h3>
               <p className="text-muted-foreground leading-relaxed">
                 I understand language models from the inside out: I've studied transformer architecture at the implementation level — attention mechanisms, tokenization, training loops — and applied that depth in real projects. I care about systems that work in the real world, not just notebooks.
@@ -233,7 +345,7 @@ export default function Home() {
                 Currently seeking ML/NLP roles in Egypt and the Gulf where Arabic language expertise meets production engineering.
               </p>
             </div>
-            <div className="space-y-4 animate-slide-in-right" style={{ animationDelay: "0.1s" }}>
+            <div className="space-y-4">
               <h3 className="text-2xl font-semibold">Education</h3>
               <div className="space-y-3">
                 <div>
@@ -251,13 +363,13 @@ export default function Home() {
       </section>
 
       {/* Skills Section */}
-      <section id="skills" className="py-20 px-4 bg-background animate-fade-in-up">
+      <section id="skills" ref={skillsRef.ref} className={`py-20 px-4 bg-background transition-all duration-1000 ${skillsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
         <div className="container mx-auto max-w-4xl space-y-12">
           <h2 className="text-4xl font-bold">Skills & Expertise</h2>
           
           <div className="grid md:grid-cols-2 gap-8">
             {Object.entries(skills).map(([category, skillList], idx) => (
-              <div key={category} className="space-y-4 animate-fade-in-up" style={{ animationDelay: `${idx * 0.1}s` }}>
+              <div key={category} className="space-y-4">
                 <h3 className="text-xl font-semibold text-primary">{category}</h3>
                 <div className="flex flex-wrap gap-2">
                   {skillList.map((skill) => (
@@ -277,7 +389,7 @@ export default function Home() {
       </section>
 
       {/* Work Experience Section */}
-      <section className="py-20 px-4 bg-card/50 animate-fade-in-up">
+      <section className="py-20 px-4 bg-card/50">
         <div className="container mx-auto max-w-4xl space-y-12">
           <h2 className="text-4xl font-bold">Work Experience</h2>
           
@@ -288,8 +400,8 @@ export default function Home() {
               <p className="text-sm text-muted-foreground">01/2024 - Present</p>
               <ul className="space-y-2 text-muted-foreground list-disc list-inside">
                 <li>Designed and deployed Line, a production Arabic AI receptionist — appointment booking, customer queries, Telegram integration using LLM, LangChain, and OpenAI API. Live with real users.</li>
-                <li>Built a social media automation pipeline (Telegram — multi-platform cutting manual publishing effort by 90% using APScheduler and Telegram Bot API.</li>
-                <li>Delivered FashionNook, a full-stack e-commerce platform — Next.js, Prisma, Supabase, NestAuth. Deployed on Vercel.</li>
+                <li>Built a social media automation pipeline (Telegram) — multi-platform cutting manual publishing effort by 90% using APScheduler and Telegram Bot API.</li>
+                <li>Delivered FashionNook, a full-stack e-commerce platform — Next.js, Prisma, Supabase, NextAuth. Deployed on Vercel.</li>
               </ul>
             </div>
           </div>
@@ -297,7 +409,7 @@ export default function Home() {
       </section>
 
       {/* Featured Projects Section */}
-      <section id="projects" className="py-20 px-4 bg-background animate-fade-in-up">
+      <section id="projects" ref={projectsRef.ref} className={`py-20 px-4 bg-background transition-all duration-1000 ${projectsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
         <div className="container mx-auto max-w-5xl space-y-12">
           <h2 className="text-4xl font-bold">Featured Projects</h2>
           
@@ -305,8 +417,7 @@ export default function Home() {
             {projects.map((project, idx) => (
               <Card
                 key={idx}
-                className="p-6 border border-border hover:border-primary hover:shadow-2xl transition-all hover:scale-105 flex flex-col group animate-fade-in-up"
-                style={{ animationDelay: `${idx * 0.08}s` }}
+                className="p-6 border border-border hover:border-primary hover:shadow-2xl transition-all hover:scale-105 flex flex-col group"
               >
                 <div className="space-y-3 flex-1">
                   <h3 className="text-xl font-semibold group-hover:text-primary transition-colors" dir={project.isArabic ? "rtl" : "ltr"}>
@@ -352,8 +463,92 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Blog Section */}
+      <section id="blog" ref={blogRef.ref} className={`py-20 px-4 bg-card/50 transition-all duration-1000 ${blogRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+        <div className="container mx-auto max-w-5xl space-y-12">
+          <div className="text-center space-y-4">
+            <h2 className="text-4xl font-bold">Latest Articles</h2>
+            <p className="text-muted-foreground">Insights on Arabic NLP, LLM systems, and production AI engineering</p>
+          </div>
+          
+          <div className="grid md:grid-cols-2 gap-6">
+            {blogArticles.map((article, idx) => (
+              <a
+                key={article.id}
+                href={article.link}
+                className="group p-6 border border-border rounded-lg hover:border-primary hover:shadow-lg transition-all hover:bg-accent/50"
+              >
+                <div className="space-y-3">
+                  <div className="flex items-center justify-between">
+                    <Badge variant="outline" className="text-xs">{article.category}</Badge>
+                    <span className="text-xs text-muted-foreground">{article.readTime}</span>
+                  </div>
+                  <h3 className="text-xl font-semibold group-hover:text-primary transition-colors">{article.title}</h3>
+                  <p className="text-muted-foreground text-sm">{article.excerpt}</p>
+                  <p className="text-xs text-muted-foreground pt-2">{article.date}</p>
+                </div>
+              </a>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* Testimonials Section */}
+      <section ref={testimonialsRef.ref} className={`py-20 px-4 bg-background transition-all duration-1000 ${testimonialsRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
+        <div className="container mx-auto max-w-4xl space-y-12">
+          <div className="text-center space-y-4">
+            <h2 className="text-4xl font-bold">What People Say</h2>
+            <p className="text-muted-foreground">Testimonials from clients and collaborators</p>
+          </div>
+
+          <div className="relative">
+            <div className="bg-card border border-border rounded-lg p-8 min-h-64 flex flex-col justify-between">
+              <div className="space-y-4">
+                <div className="flex gap-1">
+                  {[...Array(testimonials[testimonialIndex].rating)].map((_, i) => (
+                    <Star key={i} size={20} className="fill-yellow-400 text-yellow-400" />
+                  ))}
+                </div>
+                <p className="text-lg leading-relaxed">{testimonials[testimonialIndex].text}</p>
+              </div>
+              <div>
+                <p className="font-semibold">{testimonials[testimonialIndex].name}</p>
+                <p className="text-sm text-muted-foreground">{testimonials[testimonialIndex].role}</p>
+              </div>
+            </div>
+
+            {/* Carousel controls */}
+            <div className="flex justify-center gap-4 mt-8">
+              <button
+                onClick={() => setTestimonialIndex((prev) => (prev - 1 + testimonials.length) % testimonials.length)}
+                className="p-2 rounded-lg border border-border hover:bg-accent transition-colors"
+              >
+                <ChevronLeft size={20} />
+              </button>
+              <div className="flex gap-2 items-center">
+                {testimonials.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => setTestimonialIndex(idx)}
+                    className={`w-2 h-2 rounded-full transition-all ${
+                      idx === testimonialIndex ? "bg-primary w-8" : "bg-muted"
+                    }`}
+                  />
+                ))}
+              </div>
+              <button
+                onClick={() => setTestimonialIndex((prev) => (prev + 1) % testimonials.length)}
+                className="p-2 rounded-lg border border-border hover:bg-accent transition-colors"
+              >
+                <ChevronRight size={20} />
+              </button>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* Contact Section */}
-      <section id="contact" className="py-20 px-4 bg-card/50 animate-fade-in-up">
+      <section id="contact" ref={contactRef.ref} className={`py-20 px-4 bg-card/50 transition-all duration-1000 ${contactRef.isVisible ? "opacity-100 translate-y-0" : "opacity-0 translate-y-10"}`}>
         <div className="container mx-auto max-w-2xl space-y-8">
           <div className="text-center space-y-4">
             <h2 className="text-4xl font-bold">Get In Touch</h2>
@@ -441,21 +636,21 @@ export default function Home() {
               </div>
             )}
             {chatMessages.map((msg, idx) => (
-            <div
-              key={idx}
-              className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
-            >
               <div
-                className={`max-w-xs px-4 py-2 rounded-lg ${
-                  msg.role === "user"
-                    ? "bg-primary text-primary-foreground"
-                    : "bg-muted text-muted-foreground"
-                }`}
-                dir={msg.content.match(/[\u0600-\u06FF]/) ? "rtl" : "ltr"}
+                key={idx}
+                className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
               >
-                <Streamdown className="text-sm">{msg.content}</Streamdown>
+                <div
+                  className={`max-w-xs px-4 py-2 rounded-lg ${
+                    msg.role === "user"
+                      ? "bg-primary text-primary-foreground"
+                      : "bg-muted text-muted-foreground"
+                  }`}
+                  dir={msg.content.match(/[\u0600-\u06FF]/) ? "rtl" : "ltr"}
+                >
+                  <Streamdown className="text-sm">{msg.content}</Streamdown>
+                </div>
               </div>
-            </div>
             ))}
             {chatSendMutation.isPending && (
               <div className="flex justify-start">
