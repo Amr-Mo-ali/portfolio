@@ -10,6 +10,17 @@ import "./index.css";
 
 const queryClient = new QueryClient();
 
+const analyticsEndpoint = import.meta.env.VITE_ANALYTICS_ENDPOINT;
+const analyticsWebsiteId = import.meta.env.VITE_ANALYTICS_WEBSITE_ID;
+
+if (analyticsEndpoint && analyticsWebsiteId && typeof document !== "undefined") {
+  const script = document.createElement("script");
+  script.src = `${analyticsEndpoint}/umami`;
+  script.async = true;
+  script.dataset.websiteId = analyticsWebsiteId;
+  document.head.appendChild(script);
+}
+
 const redirectToLoginIfUnauthorized = (error: unknown) => {
   if (!(error instanceof TRPCClientError)) return;
   if (typeof window === "undefined") return;

@@ -1,0 +1,23 @@
+{
+  "version": 2,
+  "buildCommand": "corepack pnpm build:vercel",
+  "outputDirectory": "dist/public",
+  "functions": {
+    "api/**/*.ts": {
+      "maxDuration": 30
+    }
+  },
+  "routes": [
+    {
+      "handle": "filesystem"
+    },
+    {
+      "src": "/manus-storage/(.*)",
+      "dest": "/api/manus-storage/$1"
+    },
+    {
+      "src": "/(.*)",
+      "dest": "/index.html"
+    }
+  ]
+}
